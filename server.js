@@ -2,29 +2,29 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-
+const categoryRoutes = require("./routes/categoryRoutes");
 const connectDB = require("./config/db");
+
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
-// Middleware
 app.use(express.json());
 app.use(cors());
 
-// Database Connection
 connectDB();
 
-// Health Route
+app.use("/api/auth", authRoutes);
+app.use("/api/category", categoryRoutes);
 app.get("/", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Food Ordering API Running Successfully"
-  });
+    res.json({
+        success: true,
+        message: "Food Ordering API Running Successfully"
+    });
 });
 
-// Server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
 });
